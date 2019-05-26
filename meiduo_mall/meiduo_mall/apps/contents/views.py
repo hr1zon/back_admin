@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from goods.models import GoodsCategory, GoodsChannel
-from .models import ContentCategory, Content
+from contents.models import ContentCategory, Content
 from meiduo_mall.utils.categories import get_categories
 
 class IndexView(View):
