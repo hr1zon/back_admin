@@ -35,8 +35,7 @@ class GoodsChannel(BaseModel):
     # a=models.OneToOneField('',related_name='')
     # a=models.ManyToManyField('',related_name='')
     group = models.ForeignKey(GoodsChannelGroup, verbose_name='频道组名')
-    category = models.ForeignKey(GoodsCategory, related_name='channels', on_delete=models.CASCADE,
-                                 verbose_name='顶级商品类别')
+    category = models.ForeignKey(GoodsCategory, related_name='channels', on_delete=models.CASCADE,verbose_name='顶级商品类别')
     url = models.CharField(max_length=50, verbose_name='频道页面链接')
     sequence = models.IntegerField(verbose_name='组内顺序')
 
@@ -180,3 +179,5 @@ class GoodsVisitCount(BaseModel):
         db_table = 'tb_goods_visit'
         verbose_name = '统计分类商品访问量'
         verbose_name_plural = verbose_name
+
+

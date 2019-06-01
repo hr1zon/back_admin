@@ -323,6 +323,7 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'  # 支持中文
 # DRF配置
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'meiduo_mall.utils.exceptions.exception_handler',
+    'DEFAULT_PAGINATION_CLASS': 'meiduo_admin.utils.pagination.StandardResultPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 引入JWT认证机制，当客户端将jwt token传递给服务器之后
         # 此认证机制会自动校验jwt token的有效性，无效会直接返回401(未认证错误)
@@ -337,3 +338,10 @@ JWT_AUTH = {
     # 设置生成jwt token的有效时间
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
+
+# CORS跨域请求设置
+CORS_ORIGIN_WHITELIST = (
+    # 备注：允许源地址`127.0.0.1:8080`向当前API服务器发起跨域请求
+    'http://127.0.0.1:8080',
+)
+CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
