@@ -14,11 +14,11 @@
         label="规格名称">
       </el-table-column>
       <el-table-column
-        prop="goods"
+        prop="spu"
         label="SPU商品名称">
       </el-table-column>
       <el-table-column
-        prop="goods_id"
+        prop="spu_id"
         label="SPU商品id">
       </el-table-column>
       <el-table-column
@@ -40,10 +40,10 @@
           <el-form-item label="规格名称：" prop="name">
             <el-input type="text" v-model="specsForm.name" autocomplete="off" size="small"></el-input>
           </el-form-item>          
-          <el-form-item label="规格：" prop="goods_id">
-            <el-select v-model="specsForm.goods_id" size="small">
+          <el-form-item label="规格：" prop="spu_id">
+            <el-select v-model="specsForm.spu_id" size="small">
               <el-option
-                v-for="item in goods_list"
+                v-for="item in spu_list"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id">
@@ -77,10 +77,11 @@ export default {
     return {
       pop_show:false,
       edit_id:'',
-      goods_list:[],
+      spu_list:[],
       specsForm:{
         name:'',
-        goods_id:''
+        // spu:'',
+        spu_id:''
       },
       rulesSpecsForm:{
         name: [
@@ -101,7 +102,8 @@ export default {
         })
         .then(dat=>{
             this.specsForm.name = dat.data.name;
-            this.specsForm.goods_id = dat.data.goods_id;
+            // this.specsForm.spu = dat.data.spu;
+            this.specsForm.spu_id = dat.data.spu_id;
         }).catch(err=>{
            console.log(err.response);
       });
@@ -109,7 +111,8 @@ export default {
   	submitForm(){
   		this.axios.put(cons.apis + '/goods/specs/'+this.edit_id+'/', {
               "name": this.specsForm.name,
-        	    "goods_id": this.specsForm.goods_id,
+              // "spu": this.specsForm.spu,
+        	    "spu_id": this.specsForm.spu_id,
             }, {
             headers: {
               'Authorization': 'JWT ' + token
@@ -168,7 +171,7 @@ export default {
         responseType: 'json',
       })
       .then(dat=>{
-          this.goods_list = dat.data;        
+          this.spu_list = dat.data;
       }).catch(err=>{      
          console.log(err.response);
       });

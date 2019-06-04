@@ -2,9 +2,9 @@
   <div class="specs_wrap">
     <BreadCrumb crumb="商品规格管理"></BreadCrumb>  
     <div class="top_bar">
-       <AddSpecs @fnResetTable="fnGetData(1)"></AddSpecs>       
+       <AddSpecs @fnResetTable="fnGetData"></AddSpecs>
     </div>
-    <SpecsTable :specs="aSpecsList" @fnResetTable="fnGetData(1)"></SpecsTable>
+    <SpecsTable :specs="aSpecsList" @fnResetTable="fnGetData"></SpecsTable>
     <el-pagination
       background
       layout="prev, pager, next"
@@ -55,7 +55,7 @@ export default {
           }
       })
       .then(dat=>{
-          this.aSpecsList = dat.data.list;
+          this.aSpecsList = dat.data.lists;
           this.page = dat.data.page;
           this.pages = dat.data.pages;
       }).catch(err=>{
@@ -76,4 +76,12 @@ export default {
     overflow:hidden;
     margin:10px auto;
   }
+a{
+  display:block;
+  color:#fff;
+  width:90px;
+  line-height:42px;
+  margin:-15px -20px;
+
+}
 </style>

@@ -54,7 +54,7 @@ export default {
           }
       })
       .then(dat=>{
-          this.aSpuList = dat.data.list;
+          this.aSpuList = dat.data.lists;
           this.page = dat.data.page;
           this.pages = dat.data.pages;
       }).catch(err=>{

@@ -149,7 +149,9 @@ class SKUSerializer(serializers.ModelSerializer):
         # spu的规格内容和传递的规格内容是否一致[11， 12， 13] [11， 12， 13]
         spu_specs_ids = [spec.id for spec in spu_specs]
         specs_ids = [spec.get('spec_id') for spec in specs]
-        if spu_specs_ids.sort() != specs_ids.sort():
+        spu_specs_ids.sort()
+        specs_ids.sort()
+        if spu_specs_ids != specs_ids:
             raise serializers.ValidationError('规格内容错误')
 
         # 传递每个规格选项在spu对应规格选项中是否存在

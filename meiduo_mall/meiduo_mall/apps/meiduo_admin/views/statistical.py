@@ -112,7 +112,7 @@ class UserMonthCountView(APIView):
 
         '''
         date_now= timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        begin_date = date_now- timedelta(29)
+        begin_date = date_now - timedelta(29)
 
         count_list = []
 

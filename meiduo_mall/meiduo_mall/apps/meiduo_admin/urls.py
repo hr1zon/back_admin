@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
-from meiduo_admin.views import users, statistical, channels, skus, spus, orders
+from meiduo_admin.views import users, statistical, channels, skus, spus, orders, brands, categories, specs
 
 urlpatterns = [
 
@@ -29,12 +29,21 @@ urlpatterns = [
     # 获取第三级分类数据
     url(r'^skus/categories/$', skus.SKUCategoriesView.as_view()),
 
-    # 获取SPU数据
+    # 获取SPU简单数据
     url(r'^goods/simple/', spus.SPUSimpleView.as_view()),
 
     # 获取SPU规格信息
     url(r'^goods/(?P<pk>\d+)/specs/', spus.SPUSpecView.as_view()),
 
+    # 获取品牌下拉列表
+    url(r'^goods/brands/simple/', brands.BrandSimpleView.as_view()),
+
+    # 获取类型下拉列别
+    url(r'^goods/channel/categories/$', categories.GoodsCategorySimpleView.as_view({'get':'list'})),
+    url(r'^goods/channel/categories/(?P<pk>\d+)/$', categories.GoodsCategorySimpleView.as_view({'get':'retrieve'})),
+
+    # 添加SPU商品时插入图片
+    url(r'^goods/images/', spus.SPUImagesView.as_view()),
 
 ]
 # 商品管理
@@ -56,4 +65,20 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('orders', orders.OrdersViewSet, base_name='orders')
 urlpatterns += router.urls
-print(router.urls)
+
+
+# 品牌管理
+router = DefaultRouter()
+router.register('goods/brands', brands.BrandsViewSet, base_name='brands')
+urlpatterns += router.urls
+
+
+# SPU管理
+router = DefaultRouter()
+router.register('goods', spus.SPUViewSet, base_name='goods')
+urlpatterns += router.urls
+
+# 规格管理
+router = DefaultRouter()
+router.register('goods/specs', specs.SpecsViewSet, base_name='specs')
+urlpatterns += router.urls
