@@ -45,6 +45,9 @@ urlpatterns = [
     # 添加SPU商品时插入图片
     url(r'^goods/images/', spus.SPUImagesView.as_view()),
 
+    # # 获取简单规格数据
+    # url(r'^goods/specs/simple/', specs.SpecsSimpleView.as_view()),
+
 ]
 # 商品管理
 router = DefaultRouter()
@@ -81,4 +84,9 @@ urlpatterns += router.urls
 # 规格管理
 router = DefaultRouter()
 router.register('goods/specs', specs.SpecsViewSet, base_name='specs')
+urlpatterns += router.urls
+
+# 规格选项管理
+router = DefaultRouter()
+router.register('specs/options', specs.SpecOptionViewSet, base_name='options')
 urlpatterns += router.urls

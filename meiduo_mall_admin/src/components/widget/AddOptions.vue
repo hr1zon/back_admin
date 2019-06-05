@@ -5,8 +5,20 @@
         <el-form :model="optionsForm" status-icon :rules="rulesoptionsForm" ref="optionsForm" label-width="100px">
           <el-form-item label="选项名称：" prop="name">
             <el-input type="text" v-model="optionsForm.name" autocomplete="off" size="small"></el-input>
-          </el-form-item>          
-          <el-form-item label="规格：" prop="goods_id">
+          </el-form-item>
+
+          <el-form-item label="SPU：" prop="spu_id">
+            <el-select v-model="optionsForm.spu_id" size="small">
+              <el-option
+                v-for="item in spu_list"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="规格：">
             <el-select v-model="optionsForm.specs_id" size="small">
               <el-option
                 v-for="item in specs_list"
@@ -16,13 +28,14 @@
               </el-option>
             </el-select>
           </el-form-item>
+
           <el-form-item>
             <el-button type="primary" @click="submitForm">提交</el-button>
-            <el-button @click="resetForm('optionsForm')">重置</el-button>
+            <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
     </el-dialog>
-	</div>  
+	</div>
 </template>
 
 <script>
@@ -34,16 +47,18 @@ export default {
     var validateName = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('选项名不能为空'));
-        } else {         
-          callback()          
+        } else {
+          callback()
         }
-    }; 
+    };
     return {
       pop_show:false,
       specs_list:[],
+      spu_list:[],
       optionsForm:{
-        name:'',
-        specs_id:''
+        spu_id:'',
+        name: '',
+        specs_id: '',
       },
       rulesoptionsForm:{
         name: [
@@ -56,22 +71,23 @@ export default {
     submitForm(){
         this.axios.post(cons.apis + '/specs/options/', {
               "value":this.optionsForm.name,
+              // 需要更改
               "spec_id":this.optionsForm.specs_id
             }, {
             headers: {
               'Authorization': 'JWT ' + token
             },
-            responseType: 'json'           
+            responseType: 'json'
         })
         .then(dat=>{
             if(dat.status==201){
               this.$message({
                 type: 'success',
                 message: '添加选项成功!'
-              }); 
-              this.pop_show = false;           
+              });
+              this.pop_show = false;
               this.resetForm('optionsForm');
-              this.$emit('fnResetTable');                        
+              this.$emit('fnResetTable');
             }
         }).catch(err=>{
             if(err.response.status==400){
@@ -89,29 +105,59 @@ export default {
                   type:'info',
                   message:errmsg.non_field_errors[0]
                 });
-              }           
+              }
            }
         });
     },
-    fnGetSpecs(){
-      this.axios.get(cons.apis + '/goods/specs/simple/', {
+    fnGetSpus(){
+      this.axios.get(cons.apis + '/goods/simple/', {
         headers: {
           'Authorization': 'JWT ' + token
         },
         responseType: 'json',
       })
       .then(dat=>{
-          this.specs_list = dat.data;        
-      }).catch(err=>{      
+          this.spu_list = dat.data;
+      }).catch(err=>{
          console.log(err.response);
       });
     },
-    resetForm(formName){
-      this.$refs[formName].resetFields();
-    }
+    resetForm(){
+        this.optionsForm.spu_id = '';
+        this.optionsForm.name = '';
+        this.optionsForm.specs_id = '';
+    },
+    fnGetSpecs(){
+    this.axios.get(cons.apis + '/goods/'+ this.optionsForm.spu_id + '/specs/', {
+      headers: {
+        'Authorization': 'JWT ' + token
+      },
+      responseType: 'json',
+    })
+    .then(dat=>{
+        this.specs_list = dat.data;
+    }).catch(err=>{
+       console.log(err.response);
+    });
+    },
+  },
+
+
+  computed:{
+    look_good_id(){
+       return this.optionsForm.spu_id
+     }
   },
   mounted(){
-    this.fnGetSpecs();
+    this.fnGetSpus();
+  },
+  watch: {
+    look_good_id(newVal,oldVal){
+       if (newVal == '') {
+          return;
+       }
+       this.fnGetSpecs();
+    }
   }
 }
 </script>

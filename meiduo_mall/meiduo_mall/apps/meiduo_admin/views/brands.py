@@ -15,6 +15,9 @@ class BrandsViewSet(ModelViewSet):
 
 
 class BrandSimpleView(ListAPIView):
+    lookup_value_regex = '\d+'
+    permission_classes = [IsAdminUser]
+
     serializer_class = BrandSimpleSerializer
     queryset = Brand.objects.all()
 

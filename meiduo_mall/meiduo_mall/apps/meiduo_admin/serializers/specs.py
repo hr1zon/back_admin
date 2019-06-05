@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from goods.models import SPUSpecification, SPU
+from goods.models import SPUSpecification, SPU, SpecificationOption
 
 
 class SpecSerializer(serializers.ModelSerializer):
@@ -11,14 +11,14 @@ class SpecSerializer(serializers.ModelSerializer):
         model = SPUSpecification
         fields = ('id', 'name', 'spu', 'spu_id')
 
-    # def update(self, instance, validated_data):
-    #     print(validated_data)
-    #     name = validated_data['name']
-    #     spu_id = validated_data['spu_id']
-    #     spu = SPU.objects.get(id=spu_id)
-    #     instance.name = name
-    #     instance.spu = spu
-    #     instance.spu_id = spu_id
-    #     instance.save()
-    #     print(instance)
-    #     return instance
+
+class SpecsOptionSerializer(serializers.ModelSerializer):
+    '''规格选项信息序列化器类'''
+
+    spec = serializers.StringRelatedField(label='规格名称')
+    spec_id = serializers.IntegerField(label='规格ID')
+    class Meta:
+        model = SpecificationOption
+        exclude = ('create_time', 'update_time')
+
+

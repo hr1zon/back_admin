@@ -55,7 +55,7 @@ export default {
           }
       })
       .then(dat=>{
-          this.aOptionsList = dat.data.list;
+          this.aOptionsList = dat.data.lists;
           this.page = dat.data.page;
           this.pages = dat.data.pages;
       }).catch(err=>{
